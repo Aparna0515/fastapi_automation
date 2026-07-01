@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Portal - Modern Authentication</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background glowing shapes for glassmorphism depth -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- Main Container -->
+    <main class="app-container">
+        
+        <!-- ==================== AUTHENTICATION CARD ==================== -->
+        <div class="card glass" id="auth-card">
+            
+            <!-- Logo / Brand Header -->
+            <div class="brand-header">
+                <div class="brand-logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                    </svg>
+                </div>
+                <h1 id="auth-title">Welcome Back</h1>
+                <p id="auth-subtitle">Access your account dashboard</p>
+            </div>
+
+            <!-- Login Form Section -->
+            <section id="login-section">
+                <form id="login-form" novalidate>
+                    <div class="input-group">
+                        <label for="login-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0l-7.5-4.615a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                </svg>
+                            </span>
+                            <input type="email" id="login-email" placeholder="name@example.com" required autocomplete="email">
+                        </div>
+                        <span class="error-text" id="login-email-error"></span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="login-password">Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                </svg>
+                            </span>
+                            <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+                            <button type="button" class="password-toggle" aria-label="Toggle Password Visibility">
+                                <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <span class="error-text" id="login-password-error"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="btn-login">
+                        <span class="btn-text">Sign In</span>
+                        <div class="spinner hidden"></div>
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <span>Don't have an account? <button id="link-register" class="btn-link">Create Account</button></span>
+                </div>
+            </section>
+
+            <!-- Register Form Section -->
+            <section id="register-section" class="hidden">
+                <form id="register-form" novalidate>
+                    <div class="input-group">
+                        <label for="register-name">Full Name</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                </svg>
+                            </span>
+                            <input type="text" id="register-name" placeholder="John Doe" required autocomplete="name">
+                        </div>
+                        <span class="error-text" id="register-name-error"></span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="register-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0l-7.5-4.615a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                </svg>
+                            </span>
+                            <input type="email" id="register-email" placeholder="name@example.com" required autocomplete="email">
+                        </div>
+                        <span class="error-text" id="register-email-error"></span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="register-password">Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                </svg>
+                            </span>
+                            <input type="password" id="register-password" placeholder="Min. 8 characters" required autocomplete="new-password">
+                            <button type="button" class="password-toggle" aria-label="Toggle Password Visibility">
+                                <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <span class="error-text" id="register-password-error"></span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="register-confirm-password">Confirm Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                </svg>
+                            </span>
+                            <input type="password" id="register-confirm-password" placeholder="Repeat password" required autocomplete="new-password">
+                            <button type="button" class="password-toggle" aria-label="Toggle Password Visibility">
+                                <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <span class="error-text" id="register-confirm-password-error"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="btn-register">
+                        <span class="btn-text">Create Account</span>
+                        <div class="spinner hidden"></div>
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <span>Already have an account? <button id="link-login" class="btn-link">Sign In</button></span>
+                </div>
+            </section>
+        </div>
+        <!-- ==================== DASHBOARD PANEL ==================== -->
+        <div class="card glass hidden" id="dashboard-card">
+            
+            <!-- Dashboard Top Header Bar -->
+            <div class="dashboard-header-bar">
+                <div class="header-brand">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="header-logo">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                    </svg>
+                    <span>Secure Portal</span>
+                </div>
+                <div class="header-user-controls">
+                    <div class="user-profile-badge">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="profile-icon-svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                        <span id="user-display-name">User</span>
+                    </div>
+                    <button id="btn-logout" class="btn-logout-small" title="Sign Out">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==================== MAIN DASHBOARD MENU (GRID CARDS) ==================== -->
+            <div id="dashboard-menu-view">
+                <h1 class="menu-title">Management Dashboard</h1>
+                <p class="menu-subtitle">Select a tool card to begin processing system data</p>
+                
+                <div class="tools-grid">
+                    <!-- Card 1: Import Tool -->
+                    <div class="tool-card glass-card" id="card-import-tool">
+                        <div class="card-glow"></div>
+                        <div class="tool-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                            </svg>
+                        </div>
+                        <div class="tool-card-info">
+                            <h3>Import Tool</h3>
+                            <p>Upload CSV or JSON files to dynamically import course and student records in the background.</p>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-card-action">Launch Importer</button>
+                    </div>
+
+                    <!-- Card 2: Export Tool -->
+                    <div class="tool-card glass-card" id="card-export-tool">
+                        <div class="card-glow"></div>
+                        <div class="tool-card-icon" style="color: hsl(200, 70%, 50%); background: hsla(200, 70%, 50%, 0.15);">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                            </svg>
+                        </div>
+                        <div class="tool-card-info">
+                            <h3>Export Tool</h3>
+                            <p>Compile database Course and Student tables into downloadable CSV format using Celery worker queues.</p>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-card-action" style="background: linear-gradient(135deg, hsl(200, 70%, 45%) 0%, hsl(190, 70%, 40%) 100%);">Launch Exporter</button>
+                    </div>
+
+                    <!-- Card 3: Data View -->
+                    <div class="tool-card glass-card" id="card-data-view">
+                        <div class="card-glow"></div>
+                        <div class="tool-card-icon" style="color: hsl(142, 69%, 45%); background: hsla(142, 69%, 45%, 0.15);">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+                            </svg>
+                        </div>
+                        <div class="tool-card-info">
+                            <h3>Data Viewer</h3>
+                            <p>View, monitor, and query live Courses and Students tables saved in the system databases.</p>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-card-action" style="background: linear-gradient(135deg, hsl(142, 69%, 40%) 0%, hsl(150, 69%, 35%) 100%);">Launch Viewer</button>
+                    </div>
+
+                    <!-- Card 4: Settings -->
+                    <div class="tool-card glass-card" id="card-settings">
+                        <div class="card-glow"></div>
+                        <div class="tool-card-icon" style="color: hsl(38, 92%, 50%); background: hsla(38, 92%, 50%, 0.15);">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <div class="tool-card-info">
+                            <h3>Account Settings</h3>
+                            <p>Modify your security password, profile email address, and verify account security credentials.</p>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-card-action" style="background: linear-gradient(135deg, hsl(38, 92%, 45%) 0%, hsl(28, 92%, 40%) 100%);">Open Settings</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== SUB-PANELS (DETAILED VIEWS) ==================== -->
+            <div id="dashboard-details-view" class="hidden" style="width: 100%;">
+                
+                <!-- Back to Menu button -->
+                <button type="button" class="btn-back" id="btn-back-to-menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="btn-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    <span>Back to Tools Grid</span>
+                </button>
+
+                <!-- 1. IMPORT PANEL -->
+                <div class="tool-panel-wrapper hidden" id="panel-import-tool">
+                    <h2 class="section-title">Upload and Import Files</h2>
+                    
+                    <div class="input-group">
+                        <label for="upload-model-select">Target Model</label>
+                        <div class="select-wrapper">
+                            <select id="upload-model-select" class="select-control">
+                                <option value="Course">Course</option>
+                                <option value="Student">Student</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="info-box" id="model-guide-box">
+                        <div class="info-title">Expected File Layout</div>
+                        <p class="info-desc" id="model-guide-text">Loading instructions...</p>
+                    </div>
+
+                    <div class="template-actions">
+                        <button type="button" id="btn-dl-csv" class="btn btn-secondary btn-sm">
+                            <span class="btn-text">Download CSV Template</span>
+                        </button>
+                        <button type="button" id="btn-dl-json" class="btn btn-secondary btn-sm">
+                            <span class="btn-text">Download JSON Template</span>
+                        </button>
+                    </div>
+
+                    <div class="upload-zone" id="upload-drop-zone">
+                        <div class="upload-zone-inner">
+                            <div class="upload-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                                </svg>
+                            </div>
+                            <p class="upload-msg">Drag & drop CSV/JSON file or <span class="browse-link">browse</span></p>
+                            <p class="upload-submsg">Max file size: 5MB</p>
+                        </div>
+                        <input type="file" id="upload-file-input" accept=".csv,.json" class="hidden">
+                    </div>
+
+                    <div id="selected-file-details" class="file-details-container hidden">
+                        <div class="file-icon-name">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="file-svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                            </svg>
+                            <div class="file-info-text">
+                                <p id="selected-file-name" class="file-name">-</p>
+                                <p id="selected-file-size" class="file-size">-</p>
+                            </div>
+                        </div>
+                        <button type="button" id="btn-submit-upload" class="btn btn-primary">
+                            <span class="btn-text">Import Data</span>
+                            <div class="spinner hidden"></div>
+                        </button>
+                    </div>
+
+                    <div id="upload-results" class="upload-results-box hidden">
+                        <div class="results-header">
+                            <span class="results-title">Import Summary</span>
+                            <span class="results-badge" id="results-status-badge">Success</span>
+                        </div>
+                        <div class="result-stats">
+                            <span>Rows Imported: <strong id="result-stat-inserted">0</strong></span>
+                        </div>
+                        <div id="upload-errors-list" class="errors-list"></div>
+                    </div>
+                </div>
+
+                <!-- 2. EXPORT PANEL -->
+                <div class="tool-panel-wrapper hidden" id="panel-export-tool">
+                    <h2 class="section-title">Export Database to CSV</h2>
+                    
+                    <div class="input-group">
+                        <label for="export-model-select">Target Model</label>
+                        <div class="select-wrapper">
+                            <select id="export-model-select" class="select-control">
+                                <option value="Course">Course</option>
+                                <option value="Student">Student</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-title">Export Process</div>
+                        <p class="info-desc">
+                            Select a target model to download its database records. Once generated in the background, a notification is sent and the download triggers automatically.
+                        </p>
+                    </div>
+
+                    <div class="export-actions">
+                        <button type="button" id="btn-submit-export" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="btn-icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                            </svg>
+                            <span class="btn-text">Generate & Export CSV</span>
+                            <div class="spinner hidden"></div>
+                        </button>
+                    </div>
+
+                    <div id="export-results" class="upload-results-box hidden">
+                        <div class="results-header">
+                            <span class="results-title">Export Status</span>
+                            <span class="results-badge" id="export-status-badge">Success</span>
+                        </div>
+                        <div id="export-status-message" class="info-desc" style="color: var(--text-secondary);">
+                            Processing...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. DATA VIEW PANEL -->
+                <div class="tool-panel-wrapper hidden" id="panel-data-view">
+                    <div class="panel-header">
+                        <h2 class="section-title">Database Records Log</h2>
+                        <button id="btn-refresh-data" class="btn-refresh" title="Refresh Data">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="data-toggle-buttons">
+                        <button class="data-toggle-btn active" id="btn-show-courses">Courses</button>
+                        <button class="data-toggle-btn" id="btn-show-students">Students</button>
+                    </div>
+
+                    <div class="table-wrapper" id="courses-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Course Name</th>
+                                </tr>
+                            </thead>
+                            <tbody id="courses-table-body">
+                                <tr>
+                                    <td colspan="2" class="text-center">No courses found. Go to Tools to import.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-wrapper hidden" id="students-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Course</th>
+                                </tr>
+                            </thead>
+                            <tbody id="students-table-body">
+                                <tr>
+                                    <td colspan="4" class="text-center">No students found. Go to Tools to import.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 4. SETTINGS PANEL -->
+                <div class="tool-panel-wrapper hidden" id="panel-settings">
+                    <h2 class="section-title">Account Profile Settings</h2>
+                    
+                    <form id="settings-form" novalidate style="margin-top: 15px;">
+                        <div class="input-group">
+                            <label for="settings-name">Full Name</label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21c-2.676 0-5.216-.584-7.499-1.632z" />
+                                    </svg>
+                                </span>
+                                <input type="text" id="settings-name" placeholder="John Doe" required autocomplete="name">
+                            </div>
+                            <span class="error-text" id="settings-name-error"></span>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="settings-email">Email Address</label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0l-7.5-4.615a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                    </svg>
+                                </span>
+                                <input type="email" id="settings-email" placeholder="name@example.com" required autocomplete="email">
+                            </div>
+                            <span class="error-text" id="settings-email-error"></span>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="settings-password">New Password (Optional)</label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                    </svg>
+                                </span>
+                                <input type="password" id="settings-password" placeholder="Leave blank to keep current password" autocomplete="new-password">
+                                <button type="button" class="password-toggle" aria-label="Toggle Password Visibility">
+                                    <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <span class="error-text" id="settings-password-error"></span>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="settings-confirm-password">Confirm Password</label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                    </svg>
+                                </span>
+                                <input type="password" id="settings-confirm-password" placeholder="Repeat new password" autocomplete="new-password">
+                                <button type="button" class="password-toggle" aria-label="Toggle Password Visibility">
+                                    <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <span class="error-text" id="settings-confirm-password-error"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="btn-submit-settings" style="margin-top: 10px;">
+                            <span class="btn-text">Update Profile Settings</span>
+                            <div class="spinner hidden"></div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Floating Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Local Logic JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
