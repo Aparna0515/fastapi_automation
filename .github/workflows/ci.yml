@@ -96,6 +96,16 @@ jobs:
               git reset --hard origin/${{ github.ref_name }}
             fi
 
+            # Detect available docker compose command on EC2 host
+            if docker compose version >/dev/null 2>&1; then
+              DOCKER_COMPOSE="docker compose"
+            elif docker-compose --version >/dev/null 2>&1; then
+              DOCKER_COMPOSE="docker-compose"
+            else
+              echo "Error: Neither 'docker compose' nor 'docker-compose' is available on host!"
+              exit 1
+            fi
+
             # Rebuild and start the containers in background
-            docker compose down
-            docker compose up --build -d
+            $DOCKER_COMPOSE down
+            $DOCKER_COMPOSE up --build -d
