@@ -4,9 +4,8 @@
  * drag-and-drop file imports, and toast notifications.
  */
 
-// Base URL for the FastAPI Backend.
-const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-    ? (window.location.port === '8000' ? '' : 'http://localhost:8000') 
+const API_BASE_URL = window.location.origin && window.location.origin !== 'null' && !window.location.origin.startsWith('file://')
+    ? window.location.origin
     : 'http://localhost:8000';
 
 // Global application state
