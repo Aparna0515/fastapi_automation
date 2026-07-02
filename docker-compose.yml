@@ -47,6 +47,12 @@ services:
       - MYSQL_PASSWORD=auto_password
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - SMTP_HOST=${SMTP_HOST:-localhost}
+      - SMTP_PORT=${SMTP_PORT:-1025}
+      - SMTP_USERNAME=${SMTP_USERNAME:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+      - SMTP_FROM=${SMTP_FROM:-no-reply@secureportal.com}
+      - SMTP_TLS=${SMTP_TLS:-False}
     ports:
       - "8000:8000"
     depends_on:
@@ -77,6 +83,12 @@ services:
       - MYSQL_PASSWORD=auto_password
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - SMTP_HOST=${SMTP_HOST:-localhost}
+      - SMTP_PORT=${SMTP_PORT:-1025}
+      - SMTP_USERNAME=${SMTP_USERNAME:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+      - SMTP_FROM=${SMTP_FROM:-no-reply@secureportal.com}
+      - SMTP_TLS=${SMTP_TLS:-False}
     depends_on:
       db:
         condition: service_healthy
