@@ -52,12 +52,13 @@ def import_file_task(
             f"Secure Portal System"
         )
         
-        # Queue the email task asynchronously via Celery
-        send_email_task.delay(
-            user_email,
-            f"Secure Portal - Data Import Complete ({model_name})",
-            email_body,
-        )
+        # Queue the email task asynchronously via Celery (Disabled for security)
+        # send_email_task.delay(
+        #     user_email,
+        #     f"Secure Portal - Data Import Complete ({model_name})",
+        #     email_body,
+        # )
+        print(f"\n[LOG ONLY] Email notification generated for {user_email}:\n{email_body}\n", flush=True)
         
         return result
     except Exception as e:
@@ -66,11 +67,12 @@ def import_file_task(
             "rows_inserted": 0,
             "errors": [f"Background task failed: {str(e)}"],
         }
-        send_email_task.delay(
-            user_email,
-            "Secure Portal - Data Import Failed",
-            f"Hello {user_name},\n\nYour data import task failed to execute: {str(e)}",
-        )
+        # send_email_task.delay(
+        #     user_email,
+        #     "Secure Portal - Data Import Failed",
+        #     f"Hello {user_name},\n\nYour data import task failed to execute: {str(e)}",
+        # )
+        print(f"\n[LOG ONLY] Failure Email generated for {user_email}: Task failed: {str(e)}\n", flush=True)
         return err_result
     finally:
         db.close()
@@ -120,12 +122,13 @@ def export_data_task(model_name: str, user_email: str, user_name: str) -> dict:
             f"Secure Portal System"
         )
         
-        # Queue the email task asynchronously via Celery
-        send_email_task.delay(
-            user_email,
-            f"Secure Portal - Data Export Complete ({model_name})",
-            email_body,
-        )
+        # Queue the email task asynchronously via Celery (Disabled for security)
+        # send_email_task.delay(
+        #     user_email,
+        #     f"Secure Portal - Data Export Complete ({model_name})",
+        #     email_body,
+        # )
+        print(f"\n[LOG ONLY] Email notification generated for {user_email}:\n{email_body}\n", flush=True)
         
         return {
             "success": True,
@@ -137,11 +140,12 @@ def export_data_task(model_name: str, user_email: str, user_name: str) -> dict:
             "success": False,
             "error": f"Export task failed: {str(e)}",
         }
-        send_email_task.delay(
-            user_email,
-            "Secure Portal - Data Export Failed",
-            f"Hello {user_name},\n\nYour data export task failed to execute: {str(e)}",
-        )
+        # send_email_task.delay(
+        #     user_email,
+        #     "Secure Portal - Data Export Failed",
+        #     f"Hello {user_name},\n\nYour data export task failed to execute: {str(e)}",
+        # )
+        print(f"\n[LOG ONLY] Failure Email generated for {user_email}: Task failed: {str(e)}\n", flush=True)
         return err_res
     finally:
         db.close()
