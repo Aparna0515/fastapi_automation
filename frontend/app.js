@@ -780,18 +780,12 @@ async function submitImport() {
  */
 async function pollUploadTask(taskId, btn, btnText, spinner) {
     const resultsBox = document.getElementById('upload-results');
-    const badge = document.getElementById('results-status-badge');
-    const errorsList = document.getElementById('upload-errors-list');
+    if (resultsBox) resultsBox.classList.add('hidden');
 
     const pollInterval = setInterval(async () => {
         try {
             const data = await makeRequest(`/api/upload/tasks/${taskId}`);
             
-            if (errorsList && badge) {
-                badge.textContent = data.status;
-                errorsList.innerHTML = `<div>Queue status: <strong>${data.status}</strong>... waiting for worker.</div>`;
-            }
-
             if (data.status === 'SUCCESS' || data.status === 'FAILURE') {
                 clearInterval(pollInterval);
                 
@@ -826,13 +820,11 @@ async function pollUploadTask(taskId, btn, btnText, spinner) {
  */
 function displayUploadResults(result) {
     const resultsBox = document.getElementById('upload-results');
-    const statRows = document.getElementById('result-stat-inserted');
     const errorsList = document.getElementById('upload-errors-list');
     const badge = document.getElementById('results-status-badge');
 
-    if (!resultsBox || !statRows || !errorsList || !badge) return;
+    if (!resultsBox || !errorsList || !badge) return;
 
-    statRows.textContent = result.rows_inserted;
     errorsList.innerHTML = '';
     
     // Determine overall status colors and text
@@ -840,24 +832,22 @@ function displayUploadResults(result) {
     if (result.success && result.errors.length === 0) {
         badge.classList.add('success');
         badge.textContent = 'Success';
-        showToast('Import Complete', `Successfully imported ${result.rows_inserted} records!`, 'success');
+        errorsList.innerHTML = '<div style="color: var(--success); font-weight: 500;">Data imported successfully!</div>';
+        showToast('Import Complete', `Successfully imported records!`, 'success');
     } else if (result.success && result.errors.length > 0) {
         badge.classList.add('partial');
         badge.textContent = 'Partial';
-        showToast('Import Warning', `Imported ${result.rows_inserted} rows, but skipped some due to errors.`, 'warning');
+        errorsList.innerHTML = '<div style="color: var(--warning); font-weight: 500; margin-bottom: 8px;">Import completed. Errors encountered:</div>' + 
+            result.errors.map(err => `<div>• ${escapeHTML(err)}</div>`).join('');
+        showToast('Import Warning', `Imported rows with some skipped due to errors.`, 'warning');
     } else {
-        badge.classList.add('partial'); // treats failure as warning styling
+        badge.classList.add('partial');
         badge.style.color = 'var(--error)';
         badge.style.backgroundColor = 'var(--error-bg)';
         badge.textContent = 'Failed';
+        errorsList.innerHTML = '<div style="color: var(--error); font-weight: 500; margin-bottom: 8px;">Import failed:</div>' + 
+            result.errors.map(err => `<div>• ${escapeHTML(err)}</div>`).join('');
         showToast('Import Failed', 'No records were added due to parsing/database failures.', 'error');
-    }
-
-    // Populate row-by-row errors
-    if (result.errors.length > 0) {
-        errorsList.innerHTML = result.errors.map(err => `<div>• ${escapeHTML(err)}</div>`).join('');
-    } else {
-        errorsList.innerHTML = '<div style="color: var(--success);">No failures detected. Clean import!</div>';
     }
 
     resultsBox.classList.remove('hidden');
@@ -1166,15 +1156,12 @@ async function pollExportTask(taskId, btn, btnText, spinner, modelName) {
     const badge = document.getElementById('export-status-badge');
     const message = document.getElementById('export-status-message');
 
+    if (resultsBox) resultsBox.classList.add('hidden');
+
     const pollInterval = setInterval(async () => {
         try {
             const data = await makeRequest(`/api/upload/tasks/${taskId}`);
             
-            if (badge && message) {
-                badge.textContent = data.status;
-                message.textContent = `Queue status: <strong>${data.status}</strong>... compiling records.`;
-            }
-
             if (data.status === 'SUCCESS' || data.status === 'FAILURE') {
                 clearInterval(pollInterval);
                 
@@ -1197,30 +1184,38 @@ async function pollExportTask(taskId, btn, btnText, spinner, modelName) {
                         document.body.removeChild(link);
                         URL.revokeObjectURL(url);
                         
-                        badge.className = 'results-badge success';
-                        badge.textContent = 'Complete';
-                        message.textContent = `Successfully exported database. CSV file downloaded to your system.`;
+                        if (badge && message) {
+                            badge.className = 'results-badge success';
+                            badge.textContent = 'Complete';
+                            message.textContent = `Successfully exported database. CSV file downloaded to your system.`;
+                        }
                         showToast('Export Complete', `${modelName} CSV download triggered.`, 'success');
                     } else {
+                        if (badge && message) {
+                            badge.className = 'results-badge error';
+                            badge.style.color = 'var(--error)';
+                            badge.style.backgroundColor = 'var(--error-bg)';
+                            badge.textContent = 'Failed';
+                            message.textContent = result.error || 'Task completed but database query failed.';
+                        }
+                        showToast('Export Failed', result.error || 'CSV compilation failed.', 'error');
+                    }
+                } else {
+                    if (badge && message) {
                         badge.className = 'results-badge error';
                         badge.style.color = 'var(--error)';
                         badge.style.backgroundColor = 'var(--error-bg)';
                         badge.textContent = 'Failed';
-                        message.textContent = result.error || 'Task completed but database query failed.';
-                        showToast('Export Failed', result.error || 'CSV compilation failed.', 'error');
+                        message.textContent = 'Worker process failed to complete task execution.';
                     }
-                } else {
-                    badge.className = 'results-badge error';
-                    badge.style.color = 'var(--error)';
-                    badge.style.backgroundColor = 'var(--error-bg)';
-                    badge.textContent = 'Failed';
-                    message.textContent = 'Worker process failed to complete task execution.';
                     showToast('Export Failed', 'Worker returned an execution failure.', 'error');
                 }
+
+                if (resultsBox) resultsBox.classList.remove('hidden');
             }
         } catch (err) {
             clearInterval(pollInterval);
-            showToast('Polling Error', 'Lost connection to task monitor.', 'error');
+            showToast('Polling Error', 'Lost connection to task status monitor.', 'error');
             if (resultsBox) resultsBox.classList.add('hidden');
             btnText.classList.remove('hidden');
             spinner.classList.add('hidden');
