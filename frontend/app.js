@@ -567,15 +567,7 @@ async function loadStudentsTable() {
  * Fetch permitted upload models and caching inside application.
  */
 async function loadUploadCenterConfig() {
-    try {
-        if (!state.uploadModels) {
-            state.uploadModels = await makeRequest('/api/upload/models');
-        }
-        updateUploadGuide();
-        clearSelectedFile();
-    } catch (err) {
-        showToast('Error Loading Models', 'Unable to fetch upload schemas from backend.', 'error');
-    }
+    clearSelectedFile();
 }
 
 /**
@@ -945,10 +937,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('btn-show-students').addEventListener('click', () => switchDataTableView('students'));
     document.getElementById('btn-refresh-data').addEventListener('click', loadDataView);
 
-    // 5. Upload center template and submit bindings
-    document.getElementById('upload-model-select').addEventListener('change', updateUploadGuide);
-    document.getElementById('btn-dl-csv').addEventListener('click', () => downloadTemplate('csv'));
-    document.getElementById('btn-dl-json').addEventListener('click', () => downloadTemplate('json'));
+    // 5. Upload center submit bindings
     document.getElementById('btn-submit-upload').addEventListener('click', submitImport);
     document.getElementById('btn-submit-export').addEventListener('click', submitExport);
 
