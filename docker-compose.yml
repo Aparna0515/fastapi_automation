@@ -108,6 +108,5 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - web
-
 volumes:
   mysql_data:
